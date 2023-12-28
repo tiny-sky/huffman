@@ -13,12 +13,42 @@ class huffEncode {
 public:
 	bool encode(const char* srcFilename, const char* destFilename) {
 		if (!_getAlphaFreq(srcFilename)) return false;
-		huffTree htree(_afMap);
+        huffTree htree(_afMap);
 		htree.huffmanCode(_codeMap);
 		return _encode(srcFilename, destFilename);
 	}
+
+	void compreRatio(const char* filename) {
+        long srcsize = _getfilesize(filename);
+        long ensize = _getensize();
+        std::cout << "Accept file sizes: " << srcsize * 8 << " (Bit)" << std::endl;
+        std::cout << "Encoded data size: " << ensize <<" (Bit)" << std::endl;
+        printf("Compression ratio = %.2f%%\n",
+               static_cast<double>(ensize) /
+                       static_cast<double>(srcsize * 8) * 100);
+    }
 private:
-	int _getLastValidBit() {
+    long _getfilesize(const char *filename) {
+        std::ifstream is(filename, std::ios::binary);
+        if (!is.is_open()) {
+            printf("read file failed! filename: %s", filename);
+            return false;
+        }
+        is.seekg(0, std::ios::end);
+        long filesize = is.tellg();
+        is.close();
+        return filesize;
+    }
+
+	long _getensize() {
+        long size = 0;
+        for (auto &ele : _afMap) {
+            size += ele.second * _codeMap.at(ele.first).length();
+        }
+        return size;
+    }
+
+    int _getLastValidBit() {
 		int sum = 0;
 		for (auto it : _codeMap) {
 			sum += it.second.size() * _afMap.at(it.first);

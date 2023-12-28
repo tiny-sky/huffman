@@ -8,21 +8,26 @@
 //index位置0
 #define CLR_BYTE(vbyte, index) ((vbyte) &= (~(1 << ((index) ^ 7))))
 
+#define FLAG_ALL 14        //同时执行打印哈夫曼树与打印字符频率
+#define FLAG_FILE 2       //将上述操作全部写入到文件中
+#define FLAG_MAP 4        //在终端打印字符频率
+#define FLAG_TREE 8       //在终端打印哈夫曼树
+
 using uchar = unsigned char;
 
 struct fileHead {
-	char flag[4];				//压缩二进制文件头部标志 ycy
-	uchar alphaVariety;		    //字符种类
-	uchar lastValidBit;		    //最后一个字节的有效位数
-	char unused[10];			//待用空间
-};								//这个结构体总共占用16个字节的空间
+    char flag[4];      //压缩二进制文件头部标志 ycy
+    uchar alphaVariety;//字符种类
+    uchar lastValidBit;//最后一个字节的有效位数
+    char unused[10];   //待用空间
+};                     //这个结构体总共占用16个字节的空间
 
 struct alphaFreq {
-	uchar alpha;		        //字符,考虑到文件中有汉字，所以定义成uchar
-	int freq;	                //字符出现的频度
+    uchar alpha;//字符,考虑到文件中有汉字，所以定义成uchar
+    int freq;   //字符出现的频度
     alphaFreq() {}
-	alphaFreq(const std::pair<char, int>& x) 
-	  : alpha(x.first), freq(x.second) {}	
+    alphaFreq(const std::pair<char, int> &x)
+        : alpha(x.first), freq(x.second) {}
 };
 
 #endif
