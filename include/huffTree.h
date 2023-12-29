@@ -51,7 +51,7 @@ public:
     void huffmanCode(std::map<uchar, std::string> &codeMap) {
         Node node = q.top();
         std::string prefix;
-        if(flag & FLAG_MAP | flag & FLAG_FILE){
+        if(flag & FLAG_MAP && flag & FLAG_FILE){
             std::ofstream hufmap(file+".hufmap", std::ios::binary);
             _huffmanCode(&node, prefix, codeMap, hufmap);
             hufmap.close();
@@ -150,7 +150,6 @@ private:
 
 private:
     std::priority_queue<Node> q;
-    std::string filename;
 };
 
 void huffTree::_treeWatch(Node *root) {
