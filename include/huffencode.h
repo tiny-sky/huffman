@@ -14,8 +14,9 @@ public:
 	bool encode(const char* srcFilename, const char* destFilename) {
 		if (!_getAlphaFreq(srcFilename)) return false;
         huffTree htree(_afMap);
-		htree.huffmanCode(_codeMap);
-		return _encode(srcFilename, destFilename);
+        htree.watch();
+        htree.huffmanCode(_codeMap);
+        return _encode(srcFilename, destFilename);
 	}
 
 	void compreRatio(const char* filename) {
