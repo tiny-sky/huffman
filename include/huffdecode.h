@@ -118,6 +118,8 @@ public:
 
         for (auto it : _codeMap) {
             _decodeMap.insert(std::pair<std::string, uchar>(it.second, it.first));
+            if(flag & FLAG_MAP)
+                std::cout << std::left << std::setw(8) << it.second << std::setw(4) << "->" << std::setw(10) << it.first << std::endl;
         }
 
         return _decode(srcFilename, destFilename);
